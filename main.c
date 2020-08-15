@@ -1,20 +1,31 @@
 #include <stdio.h>
-#include <stdlib.h>
-//#include <string.h>
-int main()
-{
-    FILE *MESSAGE;
-    MESSAGE = fopen("message.txt","r");
-    char *buf;
-    fseek(MESSAGE, 0, SEEK_END);
-    long size = ftell(MESSAGE);
-    buf = malloc(size*sizeof(char));
+#include <malloc.h>
+#include "CRYPTOGRAPHY.h"
+#define MESSAGE "message.txt"
+
+int main(){
+//    test function show_binary_representation
+//    unsigned char value;
+//    scanf("%c", &value);
+//    show_binary_representation(value);
+    FILE *message = fopen(MESSAGE, "r");
+    fseek(message, 0, SEEK_END);
+    long size = ftell(message);
+    fseek(message, 0, SEEK_SET);
+    unsigned char *buf = NULL;
+    buf = malloc(size * sizeof(unsigned char));
     if (buf == NULL) {
-        printf(stderr, "Memory mistake");
+        fprintf(stderr, "Error! Not enough memory.\n");
         return 1;
     }
-    int rc;
-    for (int i = 0; (rc=getc(MESSAGE)) != EOF && i < size; buf[i++] = rc);
-for (int i = 0; i < size; i++) printf("buf[%d] = %d \n", i ,buf[i]);
-return 0;
+    else{
+        unsigned char rc;
+        for (int i = 0; i < size; i++){
+            rc=getc(message);
+            buf[i] = rc;
+            printf("\nbuf[%d] = %d %c\n", i ,buf[i], buf[i]);
+        };
+    }
+    fclose(message);
+    return 0;
 }
